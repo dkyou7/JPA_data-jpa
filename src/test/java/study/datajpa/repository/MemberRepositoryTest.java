@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-@Rollback(false)
 class MemberRepositoryTest {
 
     @Autowired MemberRepository repository;
@@ -51,5 +50,16 @@ class MemberRepositoryTest {
     @Test
     public void find_탑10뽑기(){
         List<Member> result = repository.findTop10By();
+    }
+
+    @Test
+    public void jpql로_테스트(){
+        Member m1 = new Member("user",10);
+        Member m2 = new Member("user",20);
+        repository.save(m1);
+        repository.save(m2);
+        List<Member> result = repository.findUser("user",10);
+
+        assertThat(m1).isEqualTo(result.get(0));
     }
 }
